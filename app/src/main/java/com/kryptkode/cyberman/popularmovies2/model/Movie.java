@@ -12,6 +12,13 @@ import java.util.ArrayList;
 
 public class Movie implements Parcelable {
 
+    //declare constant fields
+    public static final String POSTER = "POSTER";
+    public static final String MOVIE_TITLE = "MOVIE_TITLE";
+    public static final String MOVIE_RELEASE_DATE = "MOVIE_RELEASE_DATE";
+    public static final String MOVIE_VOTE = "MOVIE_VOTE";
+    public static final String MOVIE_OVERVIEW = "MOVIE_OVERVIEW";
+
     //declare the fields
     private String originalTitle;
     private String posterUrl;
@@ -42,8 +49,10 @@ public class Movie implements Parcelable {
     private static final String POSTER_SIZE_HIGH_RES = "w500"; //image size used in DetailActivity higher resolution
 
 
-    public Movie(String title) { // useful for testing model with dummy data
-        originalTitle = title;
+    public Movie(String title, String overview, double rating) { // useful for testing model with dummy data
+        this.originalTitle = title;
+        this.overview = overview;
+        this.voteAverage = rating;
     }
 
     public Movie(String originalTitle, String poster_path, String overview, String releaseDate,
@@ -104,7 +113,7 @@ public class Movie implements Parcelable {
     public static ArrayList<Movie> testLoad() {
         ArrayList<Movie> movies = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            movies.add(new Movie("The Big Bang Theory" + (i + 1)));
+            movies.add(new Movie("The Big Bang Theory" + (i + 1), "Sheldon Cooper has " + i + " Bitches, Oh my damn", (double) i));
         }
         return movies;
     }

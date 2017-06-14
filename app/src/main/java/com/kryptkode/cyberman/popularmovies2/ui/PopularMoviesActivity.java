@@ -9,6 +9,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.kryptkode.cyberman.popularmovies2.R;
 import com.kryptkode.cyberman.popularmovies2.adapter.MovieAdapter;
@@ -18,7 +21,16 @@ import java.util.ArrayList;
 
 public class PopularMoviesActivity extends AppCompatActivity implements MovieAdapter.OnItemClickListener {
 
-    private RecyclerView recyclerView;
+
+    //views for indicating loading
+    private ProgressBar progressBar;
+    private TextView loadingTextView;
+
+    //views for indicating error, no internet
+    private TextView errorTextView;
+    private ImageView errorImageView;
+
+    private RecyclerView recyclerView; //recycler view
     private MovieAdapter movieAdapter;
     private ArrayList<Movie> movieArrayList;
     private GridLayoutManager gridLayoutManager;
@@ -29,6 +41,12 @@ public class PopularMoviesActivity extends AppCompatActivity implements MovieAda
         setContentView(R.layout.activity_popular_movies);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //instantiate the views
+        progressBar = (ProgressBar) findViewById(R.id.loading_progress_bar);
+        loadingTextView = (TextView) findViewById(R.id.loading_text_view);
+        errorTextView = (TextView) findViewById(R.id.error_text_view);
+        errorImageView = (ImageView) findViewById(R.id.error_image_view);
 
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
@@ -47,16 +65,45 @@ public class PopularMoviesActivity extends AppCompatActivity implements MovieAda
 
 
 
-
     }
 
+    public void showNoInternetError(){
+        recyclerView.setVisibility(View.INVISIBLE);
+        errorImageView.setVisibility(View.VISIBLE);
+        errorTextView.setVisibility(View.VISIBLE);
+        Snackbar.make(findViewById(R.id.movie_container), getString(R.string.turn_on_internet), Snackbar.LENGTH_LONG).show();
+    }
+    public void hideNoInternetError(){
+        recyclerView.setVisibility(View.VISIBLE);
+        errorImageView.setVisibility(View.INVISIBLE);
+        errorTextView.setVisibility(View.INVISIBLE);
+        Snackbar.make(findViewById(R.id.movie_container), getString(R.string.connected), Snackbar.LENGTH_LONG).show();
+    }
+
+    public void showLoadingIndicators(){
+        loadingTextView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideLoadingIndicators(){
+        loadingTextView.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    //called when user clicks a movie poster or the text view
     @Override
     public void onContainerClicked(int position) {
         Movie item = movieArrayList.get(position);
+        Bundle bundle = new Bundle();
+        bundle.putString(Movie.MOVIE_TITLE, item.getOriginalTitle());
+        bundle.putString(Movie.MOVIE_OVERVIEW, item.getOverview());
+        bundle.putDouble(Movie.MOVIE_VOTE, item.getVoteAverage());
         Intent intent = new Intent(this, MovieDetailsActivity.class);
+        intent.putExtra(Movie.MOVIE_RELEASE_DATE, bundle);
         startActivity(intent);
     }
 
+    //called when the user clicks the favourites icon
     @Override
     public void onFavouritesIconClicked(int position) {
         Movie item = movieArrayList.get(position);
