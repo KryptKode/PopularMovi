@@ -1,8 +1,8 @@
 package com.kryptkode.cyberman.popularmovies2.ui;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,7 +16,7 @@ import com.kryptkode.cyberman.popularmovies2.model.Movie;
 
 import java.util.ArrayList;
 
-public class PopularMoviesActivity extends AppCompatActivity {
+public class PopularMoviesActivity extends AppCompatActivity implements MovieAdapter.OnItemClickListener {
 
     private RecyclerView recyclerView;
     private MovieAdapter movieAdapter;
@@ -40,7 +40,8 @@ public class PopularMoviesActivity extends AppCompatActivity {
         movieArrayList = Movie.testLoad();
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         movieAdapter = new MovieAdapter(this, movieArrayList);
-
+        //set the listener defined in the adapter class
+        movieAdapter.setListener(this);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(movieAdapter);
 
@@ -49,4 +50,24 @@ public class PopularMoviesActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onContainerClicked(int position) {
+        Movie item = movieArrayList.get(position);
+        Intent intent = new Intent(this, MovieDetailsActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onFavouritesIconClicked(int position) {
+        Movie item = movieArrayList.get(position);
+
+        if(item.isFavourite()){
+            item.setFavourite(false);
+        }
+        else{
+            item.setFavourite(true);
+        }
+
+        movieAdapter.notifyDataSetChanged();
+    }
 }

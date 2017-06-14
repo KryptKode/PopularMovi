@@ -20,6 +20,22 @@ public class Movie implements Parcelable {
     private double rating;
     private double voteAverage;
     private int id;
+    private int check;
+    private boolean favourite;
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
+        if (favourite){
+            check = 1;
+        }
+        else {
+            check = 0;
+        }
+    }
 
     public static final String MOVIE_POSTER_BASE_URL = "http://image.tmdb.org/t/p/"; //image base url
     public static final String POSTER_SIZE_LOW_RES= "w185"; //image size used in MainActivity
@@ -50,6 +66,13 @@ public class Movie implements Parcelable {
         rating = input.readDouble();
         releaseDate = input.readString();
         id = input.readInt();
+        check = input.readInt();
+        if (check == 1){
+            favourite = true;
+        }
+        else {
+            favourite = false;
+        }
         Log.e("Save", "parcel movie");
 
     }
@@ -113,6 +136,7 @@ public class Movie implements Parcelable {
         dest.writeDouble(rating);
         dest.writeString(releaseDate);
         dest.writeInt(id);
+        dest.writeInt(check);
         Log.e("Save","write to parcel");
     }
 

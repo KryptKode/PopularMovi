@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * Created by Cyberman on 6/14/2017.
  */
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder>{
 
     //declare the constants
     private static final String POSTER = "POSTER";
@@ -30,8 +30,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private Context context;
     private ArrayList<Movie> moviesList;
     private LayoutInflater inflater;
+    private OnItemClickListener listener;
 
 
+    public interface OnItemClickListener{
+        void onContainerClicked(int id);
+        void onFavouritesIconClicked(int id);
+    }
+
+    public void setListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    //movie adapter constructor to instantiate the inflater and array list of movies
     public MovieAdapter(Context context, ArrayList<Movie> moviesList) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
@@ -50,9 +61,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         Movie movie = moviesList.get(position);
         ImageView poster = holder.moviePoster;
         TextView title = holder.movieTitleTextView;
+        ImageView favouriteIcon = holder.favoritesStar;
 
         //set the title text view to the title of the movie
         title.setText(movie.getOriginalTitle());
+
+        if (movie.isFavourite()){
+            favouriteIcon.setImageResource(R.drawable.ic_star_black_24dp);
+        }
+        else {
+            favouriteIcon.setImageResource(R.drawable.ic_star_border_black_24dp);
+        }
 
         // set the movie poster content description to include the title of the movie
             String movieContentDescription = context.getString(R.string.movie_poster_content_description, movie.getOriginalTitle());
@@ -71,16 +90,21 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return moviesList.size();
     }
 
-    public class MovieViewHolder extends  RecyclerView.ViewHolder{
+    public class MovieViewHolder extends  RecyclerView.ViewHolder implements  View.OnClickListener{
 
         private ImageView moviePoster;
         private TextView movieTitleTextView;
         private ImageView favoritesStar;
+        private View itemRoot;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
+            itemRoot = itemView.findViewById(R.id.item_root);
             moviePoster = (ImageView) itemView.findViewById(R.id.movie_poster);
             movieTitleTextView = (TextView) itemView.findViewById(R.id.movie_title_text_view);
+            favoritesStar = (ImageView) itemView.findViewById(R.id.movie_favorite_star);
+            itemView.setOnClickListener(this);
+            favoritesStar.setOnClickListener(this);
 
 
 
@@ -88,7 +112,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
 
 
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.item_root:
+                    listener.onContainerClicked(getAdapterPosition());
+                    break;
+                case R.id.movie_favorite_star:
+                    listener.onFavouritesIconClicked(getAdapterPosition());
+                    break;
+            }
+        }
     }
+
+
 
 
 }
