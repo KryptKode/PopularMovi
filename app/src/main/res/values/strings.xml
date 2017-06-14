@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="title_activity_popular_movies">PopularMoviesActivity</string>
+    <string name="title_activity_movie_details">Movie Details</string>
+    <string name="text_error_text_view">Unable to load data</string>
+    <string name="text_loading_">Loading...</string>
+    <string name="movie_poster_content_description"> Movie poster for %1$s</string>
+    <string name="mark_as_favourite_image">mark as favourite image</string>
+</resources>
