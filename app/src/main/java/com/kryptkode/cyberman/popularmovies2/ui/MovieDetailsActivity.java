@@ -9,12 +9,16 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.kryptkode.cyberman.popularmovies2.R;
+import com.kryptkode.cyberman.popularmovies2.adapter.MovieAdapter;
 import com.kryptkode.cyberman.popularmovies2.model.Movie;
 
 public class MovieDetailsActivity extends AppCompatActivity {
 
+    private FloatingActionButton fab;
     private TextView ratingsTextView;
     private TextView overviewTextView;
+    private boolean check;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +30,20 @@ public class MovieDetailsActivity extends AppCompatActivity {
         ratingsTextView = (TextView) findViewById(R.id.rating);
         overviewTextView = (TextView) findViewById(R.id.overview_content);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                if (check){
+                    changeIconStatus(false);
+                    check = false;
+                    Snackbar.make(view, R.string.removed_from_favorites, Snackbar.LENGTH_SHORT).show();
+                }
+                else{
+                    changeIconStatus(true);
+                    check = true;
+                    Snackbar.make(view, R.string.added_to_favorites, Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -47,7 +59,20 @@ public class MovieDetailsActivity extends AppCompatActivity {
         if (bundle.containsKey(Movie.MOVIE_VOTE)){
             ratingsTextView.setText(String.valueOf(bundle.getDouble(Movie.MOVIE_VOTE)));
         }
+        if (bundle.containsKey(Movie.MOVIE_FAVOURITE)){
+            check = bundle.getBoolean(Movie.MOVIE_FAVOURITE);
+         changeIconStatus(check);
+        }
 
+    }
+
+    public void changeIconStatus(boolean status){
+        if (status){
+            fab.setImageResource(R.drawable.ic_star_black_24dp);
+        }
+        else {
+            fab.setImageResource(R.drawable.ic_star_border_black_24dp);
+        }
     }
 
 }

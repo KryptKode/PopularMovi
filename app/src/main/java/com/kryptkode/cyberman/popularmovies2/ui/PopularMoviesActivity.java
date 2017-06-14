@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -19,7 +21,7 @@ import com.kryptkode.cyberman.popularmovies2.model.Movie;
 
 import java.util.ArrayList;
 
-public class PopularMoviesActivity extends AppCompatActivity implements MovieAdapter.OnItemClickListener {
+public class PopularMoviesActivity extends AppCompatActivity  {
 
 
     //views for indicating loading
@@ -34,6 +36,7 @@ public class PopularMoviesActivity extends AppCompatActivity implements MovieAda
     private MovieAdapter movieAdapter;
     private ArrayList<Movie> movieArrayList;
     private GridLayoutManager gridLayoutManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +62,34 @@ public class PopularMoviesActivity extends AppCompatActivity implements MovieAda
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         movieAdapter = new MovieAdapter(this, movieArrayList);
         //set the listener defined in the adapter class
-        movieAdapter.setListener(this);
+        movieAdapter.setListener(onItemClickListener); //listener defined to handle clicks on the container and favorites icon
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(movieAdapter);
 
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        switch (itemId) {
+            case R.id.action_sort_by_popularity:
+                Snackbar.make(findViewById(R.id.movie_container), getString(R.string.sorting_by_popularity), Snackbar.LENGTH_SHORT).show();
+                break;
+
+            case R.id.action_sort_by_rating:
+                Snackbar.make(findViewById(R.id.movie_container), getString(R.string.sorting_by_rating), Snackbar.LENGTH_SHORT).show();
+                break;
+            case R.id.action_favorites:
+                Snackbar.make(findViewById(R.id.movie_container), getString(R.string.connected), Snackbar.LENGTH_SHORT).show();
+                break;
+        }
+        return true;
     }
 
     public void showNoInternetError(){
@@ -90,31 +115,36 @@ public class PopularMoviesActivity extends AppCompatActivity implements MovieAda
         progressBar.setVisibility(View.INVISIBLE);
     }
 
-    //called when user clicks a movie poster or the text view
-    @Override
-    public void onContainerClicked(int position) {
-        Movie item = movieArrayList.get(position);
-        Bundle bundle = new Bundle();
-        bundle.putString(Movie.MOVIE_TITLE, item.getOriginalTitle());
-        bundle.putString(Movie.MOVIE_OVERVIEW, item.getOverview());
-        bundle.putDouble(Movie.MOVIE_VOTE, item.getVoteAverage());
-        Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra(Movie.MOVIE_RELEASE_DATE, bundle);
-        startActivity(intent);
-    }
-
-    //called when the user clicks the favourites icon
-    @Override
-    public void onFavouritesIconClicked(int position) {
-        Movie item = movieArrayList.get(position);
-
-        if(item.isFavourite()){
-            item.setFavourite(false);
-        }
-        else{
-            item.setFavourite(true);
+    private MovieAdapter.OnItemClickListener onItemClickListener = new MovieAdapter.OnItemClickListener() {
+        //called when user clicks a movie poster or the text view
+        @Override
+        public void onContainerClicked(int position) {
+            Movie item = movieArrayList.get(position);
+            Bundle bundle = new Bundle();
+            bundle.putString(Movie.MOVIE_TITLE, item.getOriginalTitle());
+            bundle.putString(Movie.MOVIE_OVERVIEW, item.getOverview());
+            bundle.putDouble(Movie.MOVIE_VOTE, item.getVoteAverage());
+            bundle.putBoolean(Movie.MOVIE_FAVOURITE, item.isFavourite());
+            Intent intent = new Intent(PopularMoviesActivity.this, MovieDetailsActivity.class);
+            intent.putExtra(Movie.MOVIE_RELEASE_DATE, bundle);
+            startActivity(intent);
         }
 
-        movieAdapter.notifyDataSetChanged();
-    }
+        //called when the user clicks the favourites icon
+        @Override
+        public void onFavouritesIconClicked(int position) {
+            Movie item = movieArrayList.get(position);
+
+            if (item.isFavourite()) {
+                item.setFavourite(false);
+                Snackbar.make(findViewById(R.id.movie_container), getString(R.string.removed_from_favorites), Snackbar.LENGTH_SHORT).show();
+            } else {
+                item.setFavourite(true);
+                Snackbar.make(findViewById(R.id.movie_container), getString(R.string.added_to_favorites), Snackbar.LENGTH_SHORT).show();
+            }
+
+            movieAdapter.notifyDataSetChanged();
+        }
+    };
+
 }

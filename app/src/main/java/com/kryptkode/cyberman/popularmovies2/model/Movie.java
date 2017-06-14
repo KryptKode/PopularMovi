@@ -18,6 +18,7 @@ public class Movie implements Parcelable {
     public static final String MOVIE_RELEASE_DATE = "MOVIE_RELEASE_DATE";
     public static final String MOVIE_VOTE = "MOVIE_VOTE";
     public static final String MOVIE_OVERVIEW = "MOVIE_OVERVIEW";
+    public static final String MOVIE_FAVOURITE = "MOVIE_FAVOURITE";
 
     //declare the fields
     private String originalTitle;
