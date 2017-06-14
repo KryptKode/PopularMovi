@@ -2,4 +2,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="card_margin">8dp</dimen>
     <dimen name="card_radius">3dp</dimen>
+    <dimen name="star_margin">4dp</dimen>
 </resources>
