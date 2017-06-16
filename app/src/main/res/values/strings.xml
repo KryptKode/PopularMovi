@@ -17,6 +17,9 @@
     <string name="action_favourites_text">Favourites</string>
     <string name="action_sort_by_popularity_text">Sort by Popularity</string>
     <string name="action_sort_by_top_rated_text">Sort by Ratings</string>
-    <string name="sorting_by_popularity">Sorting by Popularity...</string>
+    <string name="sorting_by_popularity">Sorting by Popularity&#8230;</string>
     <string name="sorting_by_rating">Sorting by Rating</string>
+    <string name="title_activity_favourites">Favourite Movies</string>
+    <string name="unknown_uri">Unknown Uri:</string>
+    <string name="failed_to_insert">Failed to insert row into </string>
 </resources>

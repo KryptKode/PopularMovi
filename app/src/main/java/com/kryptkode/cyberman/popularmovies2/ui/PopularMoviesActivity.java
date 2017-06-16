@@ -1,9 +1,14 @@
 package com.kryptkode.cyberman.popularmovies2.ui;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,12 +21,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.kryptkode.cyberman.popularmovies2.R;
-import com.kryptkode.cyberman.popularmovies2.adapter.MovieAdapter;
+import com.kryptkode.cyberman.popularmovies2.adapters.MovieAdapter;
+import com.kryptkode.cyberman.popularmovies2.data.MovieContract;
 import com.kryptkode.cyberman.popularmovies2.model.Movie;
 
 import java.util.ArrayList;
 
-public class PopularMoviesActivity extends AppCompatActivity  {
+public class PopularMoviesActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
 
 
     //views for indicating loading
@@ -37,6 +43,8 @@ public class PopularMoviesActivity extends AppCompatActivity  {
     private ArrayList<Movie> movieArrayList;
     private GridLayoutManager gridLayoutManager;
 
+    private static final int LOADER_ID = 100;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +59,8 @@ public class PopularMoviesActivity extends AppCompatActivity  {
         errorTextView = (TextView) findViewById(R.id.error_text_view);
         errorImageView = (ImageView) findViewById(R.id.error_image_view);
 
+        //initialize the loader
+        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
             gridLayoutManager = new GridLayoutManager(this, 2);
@@ -86,7 +96,8 @@ public class PopularMoviesActivity extends AppCompatActivity  {
                 Snackbar.make(findViewById(R.id.movie_container), getString(R.string.sorting_by_rating), Snackbar.LENGTH_SHORT).show();
                 break;
             case R.id.action_favorites:
-                Snackbar.make(findViewById(R.id.movie_container), getString(R.string.connected), Snackbar.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, FavouritesActivity.class);
+                startActivity(intent);
                 break;
         }
         return true;
@@ -123,7 +134,7 @@ public class PopularMoviesActivity extends AppCompatActivity  {
             Bundle bundle = new Bundle();
             bundle.putString(Movie.MOVIE_TITLE, item.getOriginalTitle());
             bundle.putString(Movie.MOVIE_OVERVIEW, item.getOverview());
-            bundle.putDouble(Movie.MOVIE_VOTE, item.getVoteAverage());
+            bundle.putDouble(Movie.MOVIE_VOTE, item.getRatings());
             bundle.putBoolean(Movie.MOVIE_FAVOURITE, item.isFavourite());
             Intent intent = new Intent(PopularMoviesActivity.this, MovieDetailsActivity.class);
             intent.putExtra(Movie.MOVIE_RELEASE_DATE, bundle);
@@ -135,16 +146,45 @@ public class PopularMoviesActivity extends AppCompatActivity  {
         public void onFavouritesIconClicked(int position) {
             Movie item = movieArrayList.get(position);
 
+
             if (item.isFavourite()) {
                 item.setFavourite(false);
                 Snackbar.make(findViewById(R.id.movie_container), getString(R.string.removed_from_favorites), Snackbar.LENGTH_SHORT).show();
             } else {
                 item.setFavourite(true);
-                Snackbar.make(findViewById(R.id.movie_container), getString(R.string.added_to_favorites), Snackbar.LENGTH_SHORT).show();
+
+                ContentValues values = new ContentValues();
+                values.put(MovieContract.FavouritesEntry._ID, item.getId());
+                values.put(MovieContract.FavouritesEntry.FAVOURITES_COLUMN_MOVIE_TITLE, item.getOriginalTitle());
+                values.put(MovieContract.FavouritesEntry.FAVOURITES_COLUMN_MOVIE_RATING, item.getRatings());
+                values.put(MovieContract.FavouritesEntry.FAVOURITES_COLUMN_MOVIE_OVERVIEW, item.getOverview());
+
+                Uri uri = getContentResolver().insert(MovieContract.FavouritesEntry.CONTENT_URI, values);
+
+                Snackbar.make(findViewById(R.id.movie_container), getString(R.string.added_to_favorites) + " -->" +uri, Snackbar.LENGTH_SHORT).show();
             }
 
             movieAdapter.notifyDataSetChanged();
         }
     };
 
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        return new AsyncTaskLoader<String>(this) {
+            @Override
+            public String loadInBackground() {
+                return null;
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+
+    }
 }

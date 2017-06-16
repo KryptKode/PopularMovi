@@ -25,8 +25,7 @@ public class Movie implements Parcelable {
     private String posterUrl;
     private String overview;
     private String releaseDate;
-    private double rating;
-    private double voteAverage;
+    private double ratings;
     private int id;
     private int check;
     private boolean favourite;
@@ -50,30 +49,33 @@ public class Movie implements Parcelable {
     private static final String POSTER_SIZE_HIGH_RES = "w500"; //image size used in DetailActivity higher resolution
 
 
-    public Movie(String title, String overview, double rating) { // useful for testing model with dummy data
-        this.originalTitle = title;
-        this.overview = overview;
-        this.voteAverage = rating;
+    public Movie() {
+
     }
 
-    public Movie(String originalTitle, String poster_path, String overview, String releaseDate,
-                 double voteAverage, double ratings, int id) {
-        this.originalTitle = originalTitle;
-        this.posterUrl = poster_path;
+    public Movie(String title, String overview, double rating, int id) { // useful for testing model with dummy data
+        this.originalTitle = title;
         this.overview = overview;
-        this.voteAverage = voteAverage;
-        this.releaseDate = releaseDate;
-        this.rating = ratings;
+        this.ratings = rating;
         this.id = id;
     }
 
+    public Movie(String originalTitle, String poster_path, String overview, String releaseDate,
+                 double ratings, int id) {
+        this.originalTitle = originalTitle;
+        this.posterUrl = poster_path;
+        this.overview = overview;
+        this.ratings = ratings;
+        this.releaseDate = releaseDate;
+        this.id = id;
+
+    }
 
     public Movie(Parcel input) {
         originalTitle = input.readString();
         posterUrl = input.readString();
         overview = input.readString();
-        voteAverage = input.readDouble();
-        rating = input.readDouble();
+        ratings = input.readDouble();
         releaseDate = input.readString();
         id = input.readInt();
         check = input.readInt();
@@ -86,6 +88,7 @@ public class Movie implements Parcelable {
         Log.e("Save", "parcel movie");
 
     }
+
 
     //the getter methods
     public String getOriginalTitle() {
@@ -100,24 +103,59 @@ public class Movie implements Parcelable {
         return overview;
     }
 
-    public double getVoteAverage() {
-        return voteAverage;
+    public double getRatings() {
+        return ratings;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getReleaseDate() {
         return releaseDate;
     }
 
+    //setter methods
 
+    public void setOriginalTitle(String originalTitle) {
+        this.originalTitle = originalTitle;
+    }
+
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public void setRatings(double ratings) {
+        this.ratings = ratings;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+
+    public void setCheck(int check) {
+        this.check = check;
+    }
 
     //testing the recycler view with mock data
     public static ArrayList<Movie> testLoad() {
         ArrayList<Movie> movies = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            movies.add(new Movie("The Big Bang Theory" + (i + 1), "Sheldon Cooper has " + i + " Bitches, Oh my damn", (double) i));
+            movies.add(new Movie("The Big Bang Theory" + (i + 1), "Sheldon Cooper has " + i + " Bitches, Oh my damn", (double) i, i));
         }
         return movies;
     }
+
 
     //method to get the image
     public String getPoster(boolean highResolution) {
@@ -130,7 +168,6 @@ public class Movie implements Parcelable {
         return url;
     }
 
-
     //Parcelbles for savedInstanceState
     @Override
     public int describeContents() {
@@ -142,8 +179,7 @@ public class Movie implements Parcelable {
         dest.writeString(originalTitle);
         dest.writeString(posterUrl);
         dest.writeString(overview);
-        dest.writeDouble(voteAverage);
-        dest.writeDouble(rating);
+        dest.writeDouble(ratings);
         dest.writeString(releaseDate);
         dest.writeInt(id);
         dest.writeInt(check);

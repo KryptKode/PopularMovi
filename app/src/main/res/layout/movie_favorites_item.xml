@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/favourites_container"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:id="@+id/favourites_movie_poster"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/tv_margin"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/movie_poster_content_description"
+        app:srcCompat = "@drawable/no_image"
+        />
+
+    <TextView
+        android:id="@+id/favorites_movie_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/favourites_movie_poster"
+        android:layout_toEndOf="@+id/favourites_movie_poster"
+        android:layout_marginTop="@dimen/tv_margin"
+        android:layout_marginLeft="@dimen/tv_margin"
+        android:layout_marginStart="@dimen/tv_margin"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text = "The Big Bang Theory"
+        />
+
+    <TextView
+        android:id="@+id/favourites_movie_ratings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/favourites_movie_poster"
+        android:layout_toEndOf="@+id/favourites_movie_poster"
+        android:layout_below="@+id/favorites_movie_title"
+        android:layout_marginTop="@dimen/tv_margin"
+        android:layout_marginLeft="@dimen/tv_margin"
+
+        android:layout_marginStart="@dimen/tv_margin"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text = "4.9"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/darker_gray"/>
+
+</RelativeLayout>

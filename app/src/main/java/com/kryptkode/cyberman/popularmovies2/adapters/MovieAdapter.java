@@ -1,4 +1,4 @@
-package com.kryptkode.cyberman.popularmovies2.adapter;
+package com.kryptkode.cyberman.popularmovies2.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

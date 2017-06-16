@@ -26,6 +26,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.kryptkode.cyberman.popularmovies2.ui.PopularMoviesActivity" />
         </activity>
+        <activity
+            android:name=".ui.FavouritesActivity"
+            android:label="@string/title_activity_favourites"
+            android:parentActivityName=".ui.PopularMoviesActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.kryptkode.cyberman.popularmovies2.ui.PopularMoviesActivity" />
+        </activity>
+
+        <provider
+            android:authorities= "com.kryptkode.cyberman.popularmovies.data"
+            android:name="com.kryptkode.cyberman.popularmovies2.data.MovieProvider"
+            android:exported="false" />
     </application>
 
 </manifest>
