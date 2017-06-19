@@ -2,6 +2,7 @@ package com.kryptkode.cyberman.popularmovies2.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.kryptkode.cyberman.popularmovies2.R;
 import com.kryptkode.cyberman.popularmovies2.model.Trailers;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.zip.Inflater;
@@ -49,15 +51,22 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
     @Override
     public void onBindViewHolder(TrailersViewHolder holder, int position) {
         Trailers trailer = trailersArrayList.get(position);
-        if(position % 2 == 0){
-            holder.tralerIcon.setImageResource(R.drawable.ic_ondemand_video_red_72dp);
-        }
-        else {
-            holder.tralerIcon.setImageResource(R.drawable.ic_ondemand_video_black_72dp);
-        }
+
+        ImageView icon = holder.tralerIcon;
+
+
+        Picasso.with(context)
+                .load(trailer.getYoutubeThumbnail()) //get the low resolution image
+                .placeholder(R.drawable.loading)
+                .error(position%2 == 0? R.drawable.trailer_icon_blue : R.drawable.ic_ondemand_video_red_72dp )
+                .into(icon);
+
+        Log.e("THUMBNAIL", "--> " + trailer.getYoutubeThumbnail());
 
         holder.tralerIcon.setTag(R.string.trailer_url_id, trailer.getYoutubeUrl() );
         holder.trailerTitle.setText(trailer.getName());
+
+
     }
 
     @Override

@@ -11,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,7 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class MovieDetailsActivity extends AppCompatActivity implements View.OnClickListener {
+public class MovieDetailsActivity extends AppCompatActivity implements View.OnClickListener , TrailersAdapter.OnClickTrailerIconListener{
 
     private FloatingActionButton fab;
     private TextView ratingsTextView;
@@ -77,6 +78,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         trailersGridLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         trailersRecyclerView.setLayoutManager(trailersGridLayoutManager);
         trailersAdapter = new TrailersAdapter(this, trailersArrayList);
+        trailersAdapter.setTrailerIconListener(this);
         trailersRecyclerView.setAdapter(trailersAdapter);
 
         reviewsArrayList = Reviews.generateDummyReviews(100);
@@ -157,6 +159,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                 .placeholder(R.drawable.loading)
                 .error(R.drawable.no_image)
                 .into(moviePoster);
+
     }
 
     //nethod to change the icon status
@@ -202,6 +205,22 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         Intent intent = new Intent(this, ReviewsActivity.class);
         intent.putExtra(Reviews.REVIEWS, bundle);
         startActivity(intent);
+
+    }
+
+    @Override
+    public void onClickTrailerIcon(int position) {
+       startVideoIntent(position);
+    }
+
+    private void startVideoIntent( int position ) {
+        Trailers trailer = trailersArrayList.get(position);
+        Uri imageVideoLink = Uri.parse(trailer.getYoutubeUrl());
+        Log.e("THUMBNAIL", "URL--> " + trailer.getYoutubeUrl());
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, imageVideoLink);
+        Intent chooserIntent = Intent.createChooser(intent, getString(R.string.chooser_msg));
+        startActivity(chooserIntent);
 
     }
 }

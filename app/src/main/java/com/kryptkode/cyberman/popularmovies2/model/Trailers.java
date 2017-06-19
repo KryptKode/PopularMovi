@@ -11,14 +11,22 @@ import java.util.ArrayList;
 
 public class Trailers implements Parcelable {
     public static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
+    public static final String  YOUTUBE_THUMBNAIL_BASE_URL = "https://img.youtube.com/vi/";
     public static final int URL = 100;
     public static final String TRAILERS = "trailers" ;
     public static final String TITLE = "title";
+    private static final String DEFAULTJPG =  "/default.jpg";
     private String type;
     private String name;
     private String key;
     private String site;
-    private String youtubeUrl = YOUTUBE_BASE_URL + key;
+    private String youtubeUrl;
+
+    public String getYoutubeThumbnail() {
+        return YOUTUBE_THUMBNAIL_BASE_URL + getKey() + DEFAULTJPG;
+    }
+
+    private String youtubeThumbnail;
 
     public Trailers(String name, String key, String type) {
         this.name = name;
@@ -59,7 +67,7 @@ public class Trailers implements Parcelable {
     }
 
     public String getYoutubeUrl() {
-        return youtubeUrl;
+        return  YOUTUBE_BASE_URL + getKey();
     }
 
 
@@ -68,7 +76,7 @@ public class Trailers implements Parcelable {
         ArrayList<Trailers> trailersArrayList = new ArrayList<>();
         Trailers trailers;
         for (int i = 0; i < number; i++){
-            trailers = new Trailers( i%2 == 0?"WonderWoman": "Logan", "dkgjdjgkjdkgkdfjg", i%2 == 0?"Trailer":"Teaser" );
+            trailers = new Trailers( i%2 == 0?"WonderWoman": "Logan", "5lGoQhFb4NM", i%2 == 0?"Trailer":"Teaser" );
             trailersArrayList.add(trailers);
         }
 

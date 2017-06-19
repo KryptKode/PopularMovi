@@ -28,6 +28,7 @@ import com.kryptkode.cyberman.popularmovies2.data.MovieContract;
 import com.kryptkode.cyberman.popularmovies2.model.Movie;
 import com.kryptkode.cyberman.popularmovies2.utilities.JsonGet;
 import com.kryptkode.cyberman.popularmovies2.utilities.NetworkUtil;
+import com.kryptkode.cyberman.popularmovies2.utilities.EndlessRecyclerViewScrollListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,6 +55,8 @@ public class PopularMoviesActivity extends AppCompatActivity implements LoaderMa
     private MovieAdapter movieAdapter;
     private ArrayList<Movie> movieArrayList;
     private GridLayoutManager gridLayoutManager;
+
+    private EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener;
 
     private static final int LOADER_ID = 100;
 

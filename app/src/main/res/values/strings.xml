@@ -36,4 +36,5 @@
     <string name="reviews_title">Reviews for %s</string>
     <string name="title_activity_trailers">TrailersActivity</string>
     <string name="trailers_activity_title">Trailers for %s</string>
+    <string name="chooser_msg">Select App to Play Video</string>
 </resources>
