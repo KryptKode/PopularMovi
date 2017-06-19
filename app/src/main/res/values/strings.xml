@@ -8,10 +8,11 @@
     <string name="mark_as_favourite_image">Mark as favourite image</string>
     <string name="release_date_text_view_label">Release Date: </string>
     <string name="rating_text_view_label">Rating: </string>
-    <string name="overview_text_view_label">Overview: </string>
+    <string name="overview_text_view_label">Overview</string>
     <string name="default_text">Not Found</string>
     <string name="turn_on_internet">Please turn on your internet connection</string>
     <string name="connected">Connected!</string>
+    <string name="is_not_connected">Please turn on your internet connection</string>
     <string name="added_to_favorites">Added to Favorites</string>
     <string name="removed_from_favorites">Removed from Favourites</string>
     <string name="action_favourites_text">Favourites</string>
@@ -22,4 +23,17 @@
     <string name="title_activity_favourites">Favourite Movies</string>
     <string name="unknown_uri">Unknown Uri:</string>
     <string name="failed_to_insert">Failed to insert row into </string>
+    <string name="reviews_header">Reviews</string>
+    <string name="no_reviews">No Reviews</string>
+    <string name="trailers_header">Trailers</string>
+    <string name="no_trailers">No Trailers</string>
+    <string name="trailer_video_icon">Trailer Video Icon</string>
+    <string name="trailer_url_id">trailer url id</string>
+    <string name="author">Author Avatar</string>
+    <string name="all_trailers">ALL TRAILERS</string>
+    <string name="all_reviews">ALL REVIEWS</string>
+    <string name="title_activity_reviews">ReviewsActivity</string>
+    <string name="reviews_title">Reviews for %s</string>
+    <string name="title_activity_trailers">TrailersActivity</string>
+    <string name="trailers_activity_title">Trailers for %s</string>
 </resources>

@@ -13,12 +13,14 @@ import java.util.ArrayList;
 public class Movie implements Parcelable {
 
     //declare constant fields
-    public static final String POSTER = "POSTER";
+    public static final String POSTER_URL = "POSTER_URL";
     public static final String MOVIE_TITLE = "MOVIE_TITLE";
     public static final String MOVIE_RELEASE_DATE = "MOVIE_RELEASE_DATE";
     public static final String MOVIE_VOTE = "MOVIE_VOTE";
     public static final String MOVIE_OVERVIEW = "MOVIE_OVERVIEW";
     public static final String MOVIE_FAVOURITE = "MOVIE_FAVOURITE";
+    public static final String BUNDLE = "movie";
+    public static final String MOVIE_ID = "id";
 
     //declare the fields
     private String originalTitle;

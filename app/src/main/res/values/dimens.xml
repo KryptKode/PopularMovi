@@ -5,4 +5,5 @@
     <dimen name="star_margin">4dp</dimen>
     <dimen name="textview_padding">16dp</dimen>
     <dimen name="tv_margin">8dp</dimen>
+    <dimen name="trailer_image_margin">8dp</dimen>
 </resources>

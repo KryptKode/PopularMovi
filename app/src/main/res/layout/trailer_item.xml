@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/card_margin"
+    app:cardCornerRadius="@dimen/card_radius">
+
+    <LinearLayout
+        android:id="@+id/favourites_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/background_state">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/trailer_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/trailer_image_margin"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/trailer_video_icon"
+                android:background="@drawable/background_state" />
+            <ImageView
+                android:id="@+id/trailer_image_view_play"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/trailer_image_margin"
+                android:contentDescription="@string/trailer_video_icon"
+                android:background="@drawable/background_state"
+                app:srcCompat="@drawable/video_play" />
+
+        </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/trailer_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/tv_margin"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text = "Official Comic-Con Trailer"
+        />
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

@@ -2,52 +2,53 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/favourites_container"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
 
-    <ImageView
-        android:id="@+id/favourites_movie_poster"
+    <TextView
+        android:id="@+id/review_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/tv_margin"
-        android:scaleType="centerCrop"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/movie_poster_content_description"
-        app:srcCompat = "@drawable/no_image"
-        />
+        android:layout_margin="@dimen/trailer_image_margin"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:gravity="fill_vertical|center_horizontal"
+        android:textSize="32sp"
+        android:background="@drawable/avatar_background"
+        android:contentDescription="@string/author"
+        android:textColor="@android:color/white"
+        tools:text= "P"
+         />
 
     <TextView
-        android:id="@+id/favorites_movie_title"
+        android:id="@+id/review_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/favourites_movie_poster"
-        android:layout_toEndOf="@+id/favourites_movie_poster"
+        android:layout_toRightOf="@+id/review_logo"
+        android:layout_toEndOf="@+id/review_logo"
         android:layout_marginTop="@dimen/tv_margin"
         android:layout_marginLeft="@dimen/tv_margin"
         android:layout_marginStart="@dimen/tv_margin"
         android:textAppearance="?android:textAppearanceLarge"
         android:maxLines="1"
         android:ellipsize="end"
-        tools:text = "The Big Bang Theory"
+        tools:text = "Official Comic-Con Trailer"
         />
 
     <TextView
-        android:id="@+id/favourites_movie_ratings"
+        android:id="@+id/review_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/favourites_movie_poster"
-        android:layout_toEndOf="@+id/favourites_movie_poster"
-        android:layout_below="@+id/favorites_movie_title"
-        android:layout_marginTop="@dimen/tv_margin"
-        android:layout_marginLeft="@dimen/tv_margin"
-        android:layout_marginStart="@dimen/tv_margin"
+        android:layout_toRightOf="@+id/review_logo"
+        android:layout_toEndOf="@+id/review_logo"
+        android:lineSpacingExtra="4dp"
+        android:layout_below="@+id/review_author"
+        android:layout_margin="@dimen/tv_margin"
         android:textAppearance="?android:textAppearanceMedium"
-        android:maxLines="1"
-        android:ellipsize="end"
-        tools:text = "4.9"
+        tools:text = "Teaser"
+
         />
 
     <View

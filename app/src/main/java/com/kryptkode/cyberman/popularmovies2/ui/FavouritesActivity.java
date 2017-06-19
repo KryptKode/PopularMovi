@@ -17,6 +17,7 @@ import android.util.Log;
 import com.kryptkode.cyberman.popularmovies2.R;
 import com.kryptkode.cyberman.popularmovies2.adapters.FavouriteMoviesAdapter;
 import com.kryptkode.cyberman.popularmovies2.data.MovieContract;
+import com.kryptkode.cyberman.popularmovies2.model.Movie;
 
 public class FavouritesActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -27,7 +28,7 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
     private LinearLayoutManager linearLayoutManager;
 
     //cursor to hold the data queryied from the database
-    private Cursor favouriteMoviesCursor;
+    private Cursor cursor;
 
 
     @Override
@@ -56,10 +57,9 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                int id = (int) viewHolder.itemView.getTag();
-
+                favouriteMoviesAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
                 // Build appropriate uri with String row id appended
-                String stringId = Integer.toString(id);
+                String stringId = Integer.toString((int) viewHolder.itemView.getTag());
                 Uri uri = MovieContract.FavouritesEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath(stringId).build();
 
@@ -68,6 +68,8 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
 
                 // COMPLETED (3) Restart the loader to re-query for all tasks after a deletion
                 getSupportLoaderManager().restartLoader(LOADER_ID, null, FavouritesActivity.this);
+
+               Log.e("DEL", "--> " + viewHolder.getAdapterPosition());
 
             }
         }).attachToRecyclerView(recyclerView);
@@ -83,14 +85,16 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
     FavouriteMoviesAdapter.ItemClickListener clickListener = new FavouriteMoviesAdapter.ItemClickListener() {
         @Override
         public void onItemClick(int position) {
-           /* Movie item = favouriteMovieArrayList.get(position);
+            Movie item = favouriteMoviesAdapter.getFavouriteMoviesDataFromCursor(cursor, position);
             Bundle bundle = new Bundle();
             bundle.putString(Movie.MOVIE_TITLE, item.getOriginalTitle());
             bundle.putString(Movie.MOVIE_OVERVIEW, item.getOverview());
-            bundle.putDouble(Movie.MOVIE_VOTE, item.getVoteAverage());
-            bundle.putBoolean(Movie.MOVIE_FAVOURITE, item.isFavourite());*/
+            bundle.putString(Movie.POSTER_URL, item.getPosterPath());
+            bundle.putString(Movie.MOVIE_RELEASE_DATE, item.getReleaseDate());
+            bundle.putDouble(Movie.MOVIE_VOTE, item.getRatings());
+            bundle.putBoolean(Movie.MOVIE_FAVOURITE, true);
             Intent intent = new Intent(FavouritesActivity.this, MovieDetailsActivity.class);
-            //intent.putExtra(Movie.MOVIE_RELEASE_DATE, bundle);
+            intent.putExtra(Movie.MOVIE_FAVOURITE, bundle);
             startActivity(intent);
         }
     };
@@ -100,7 +104,6 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new AsyncTaskLoader<Cursor>(this) {
             // Initialize a Cursor, this will hold all the task data
-            Cursor cursor = null;
 
             // onStartLoading() is called when a loader first starts loading data
             @Override
@@ -118,22 +121,26 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
             @Override
             public Cursor loadInBackground() {
                 // Will implement to load data
-
+                Cursor cursor;
                 // Query and load all task data in the background; sort by priority
                 // [Hint] use a try/catch block to catch any errors in loading data
 
                 try {
-                    return getContentResolver().query(MovieContract.FavouritesEntry.CONTENT_URI,
+                    cursor = getContentResolver().query(MovieContract.FavouritesEntry.CONTENT_URI,
                             null,
                             null,
                             null,
                             null);
+                    return cursor;
 
                 } catch (Exception e) {
                     Log.e(LOG_TAG, "Failed to asynchronously load data.");
                     e.printStackTrace();
                     return null;
                 }
+
+
+
             }
 
             // deliverResult sends the result of the load, a Cursor, to the registered listener
