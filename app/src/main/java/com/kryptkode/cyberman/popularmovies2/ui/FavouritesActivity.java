@@ -86,6 +86,7 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
         public void onItemClick(int position) {
             Movie item = favouriteMoviesAdapter.getFavouriteMoviesDataFromCursor(cursor, position);
             Bundle bundle = new Bundle();
+            bundle.putInt(Movie.MOVIE_ID, item.getId());
             bundle.putString(Movie.MOVIE_TITLE, item.getOriginalTitle());
             bundle.putString(Movie.MOVIE_OVERVIEW, item.getOverview());
             bundle.putString(Movie.POSTER_URL, item.getPosterPath());

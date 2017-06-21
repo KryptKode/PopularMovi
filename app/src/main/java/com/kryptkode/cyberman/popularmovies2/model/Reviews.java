@@ -13,6 +13,8 @@ public class Reviews implements Parcelable {
     public static final String REVIEWS = "reviews";
     public static final String TITLE =  "title";
     public static final String PAGE = "page";
+    public static final String MOVIE_ID = "movie_id";
+    public static final String IS_EMPTY = "empty";
     private String author;
     private String content;
 

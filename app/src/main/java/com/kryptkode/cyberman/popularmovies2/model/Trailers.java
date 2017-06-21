@@ -17,6 +17,8 @@ public class Trailers implements Parcelable {
     public static final String TITLE = "title";
     private static final String DEFAULTJPG =  "/default.jpg";
     public static final String PAGE = "page";
+    public static final String IS_EMPTY = "empty";
+    public static final String MOVIE_ID = "id" ;
     private String type;
     private String name;
     private String key;

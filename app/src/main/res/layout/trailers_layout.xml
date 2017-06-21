@@ -61,6 +61,18 @@
                         android:visibility="invisible"
                         />
 
+
+                    <TextView
+                        android:id="@+id/no_trailers_text_view"
+                        style="@style/OtherLabelsStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/no_trailers"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true"
+                        android:visibility="invisible"
+                        tools:textColor="@android:color/black"/>
+
                     <ProgressBar
                         android:id="@+id/trailers_loading_progress_bar"
                         android:layout_width="wrap_content"
@@ -85,14 +97,6 @@
 
             </FrameLayout>
 
-            <TextView
-                android:id="@+id/no_trailers_text_view"
-                style="@style/OtherLabelsStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/no_trailers"
-                android:visibility="gone"
-                tools:textColor="@android:color/black"/>
 
             <View
                 android:layout_width="match_parent"

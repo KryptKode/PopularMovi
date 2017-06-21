@@ -86,6 +86,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     private ReviewsCallback reviewsCallback;
     private ProgressBar reviewsLoadingProgressBar;
     private TextView reviewsLoadingTextView;
+    private TextView noreviewsTextView;
+    private TextView noTrailersTextView;
+    private boolean trailersAreEmpty;
+    private boolean reviewsAreEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,6 +266,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(Trailers.TRAILERS, trailersArrayList);
         bundle.putString(Trailers.TITLE, movieTitle);
+        bundle.putBoolean(Trailers.IS_EMPTY, trailersAreEmpty);
         Intent intent = new Intent(this, TrailersActivity.class);
         intent.putExtra(Trailers.TRAILERS, bundle);
         startActivity(intent);
@@ -274,6 +279,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(Reviews.REVIEWS, reviewsArrayList);
         bundle.putString(Reviews.TITLE, movieTitle);
+        bundle.putInt(Reviews.MOVIE_ID, movieID);
+        bundle.putBoolean(Reviews.IS_EMPTY, reviewsAreEmpty);
         Intent intent = new Intent(this, ReviewsActivity.class);
         intent.putExtra(Reviews.REVIEWS, bundle);
         startActivity(intent);
@@ -331,10 +338,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
     private void parseTrailersData(String data) {
         ArrayList<Trailers> tempArray = JsonParser.parseMovieTrailersJSON(data);
-        for (int i = 0; i< tempArray.size(); i++){
-            trailersArrayList.add(tempArray.get(i));
-        }
 
+        if (tempArray.isEmpty()){
+            noTrailersTextView = (TextView) findViewById(R.id.no_trailers_text_view);
+            noTrailersTextView.setVisibility(View.VISIBLE);
+            trailersAreEmpty = true;
+        }
+        else {
+            for (int i = 0; i< tempArray.size(); i++){
+                trailersArrayList.add(tempArray.get(i));
+            }
+        }
 
     }
 
@@ -375,8 +389,20 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     private void parseReviewsData(String data) {
 
         ArrayList<Reviews> tempArray = JsonParser.parseMovieReviewsJSON(data);
-        for (int i = 0; i< tempArray.size(); i++){
-            reviewsArrayList.add(tempArray.get(i));
+        if (tempArray.isEmpty()){
+            noreviewsTextView = (TextView) findViewById(R.id.reviews_no_reviews_text_view);
+
+            if (noreviewsTextView != null) {
+
+                noreviewsTextView.setVisibility(View.VISIBLE);
+            }
+            reviewsAreEmpty = true;
+        }
+        else{
+
+            for (int i = 0; i< tempArray.size(); i++){
+                reviewsArrayList.add(tempArray.get(i));
+            }
         }
 
     }

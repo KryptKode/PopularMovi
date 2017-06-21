@@ -60,6 +60,8 @@
                         android:visibility="invisible"
                         />
 
+
+
                     <ProgressBar
                         android:id="@+id/reviews_loading_progress_bar"
                         android:layout_width="wrap_content"
@@ -83,17 +85,6 @@
                 </RelativeLayout>
 
             </FrameLayout>
-
-
-            <TextView
-                android:id="@+id/no_reviews_text_view"
-                style="@style/OtherLabelsStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/no_reviews"
-                android:visibility="gone"
-                tools:textColor="@android:color/black"/>
-
 
 
             <View
