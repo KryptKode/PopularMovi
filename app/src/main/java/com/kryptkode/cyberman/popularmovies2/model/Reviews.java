@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class Reviews implements Parcelable {
     public static final String REVIEWS = "reviews";
     public static final String TITLE =  "title";
+    public static final String PAGE = "page";
     private String author;
     private String content;
 

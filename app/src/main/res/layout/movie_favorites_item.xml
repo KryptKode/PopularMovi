@@ -46,7 +46,10 @@
         android:layout_marginStart="@dimen/tv_margin"
         android:textAppearance="?android:textAppearanceMedium"
         android:maxLines="1"
+        android:drawableStart="@drawable/ic_star_half_black_24dp"
+        android:drawableLeft="@drawable/ic_star_half_black_24dp"
         android:ellipsize="end"
+        android:gravity="fill_vertical"
         tools:text = "4.9"
         />
 

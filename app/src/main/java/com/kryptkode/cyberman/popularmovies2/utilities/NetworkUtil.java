@@ -14,12 +14,13 @@ public abstract class NetworkUtil extends Context {
 
 
     //constants declaration
-    private final static String BASE_URL = "https://api.themoviedb.org/3/";//API base url
+    private final static String BASE_URL = "https://api.themoviedb.org/3/movie";//API base url
     private final static String API_KEY_QUERY_PARAM = "api_key";
     private static final String  API_KEY = BuildConfig.API_KEY;
     public final static String POPULAR = "popular"; //sort by the popularity rating
     public final static String RATING = "top_rated";//sort by the top viewed rating
-    private final static String MOVIE = "movie";
+    public static final String VIDEOS = "videos";
+    public static final String REVIEWS = "reviews";
 
 
     //method to build the appropriate URL when viewing by RATINGS or POPULARITY
@@ -28,14 +29,12 @@ public abstract class NetworkUtil extends Context {
         switch (sortParameter){
             case POPULAR:
                 builtUri = Uri.parse(BASE_URL).buildUpon()
-                        .appendPath(MOVIE)
                         .appendPath(POPULAR)
                         .appendQueryParameter(API_KEY_QUERY_PARAM,API_KEY )
                         .build();
                 break;
             case RATING:
                 builtUri = Uri.parse(BASE_URL).buildUpon()
-                        .appendPath(MOVIE)
                         .appendPath(RATING)
                         .appendQueryParameter(API_KEY_QUERY_PARAM,API_KEY )
                         .build();
@@ -49,6 +48,37 @@ public abstract class NetworkUtil extends Context {
         }
         return url;
     }
+
+    public static String buildReviewsUrl(String id){
+        Uri.Builder builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath(id)
+                .appendPath(REVIEWS)
+                .appendQueryParameter(API_KEY_QUERY_PARAM, API_KEY);
+        URL url = null;
+        try{
+            url = new URL (builtUri.toString());
+        } catch (MalformedURLException | NullPointerException e){
+            e.printStackTrace();
+        }
+        return url.toString();
+    }
+
+    public static String buildTrailersUrl(String id){
+        Uri.Builder builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath(id)
+                .appendPath(VIDEOS)
+                .appendQueryParameter(API_KEY_QUERY_PARAM, API_KEY);
+        URL url = null;
+        try{
+            url = new URL (builtUri.toString());
+        } catch (MalformedURLException | NullPointerException e){
+            e.printStackTrace();
+        }
+        return url.toString();
+    }
+
 
     //method to check if there is internet connectivity
     public static boolean isOnline(Context context) {

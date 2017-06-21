@@ -32,7 +32,7 @@
             <ImageView
                 android:id="@+id/detail_image_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
@@ -56,201 +56,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:background="@color/background"
             tools:context="com.kryptkode.cyberman.popularmovies.DetailActivity">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/content_background"
-                android:fontFamily="sans-serif"
-                android:textAlignment="center"
-                android:textAppearance="?android:textAppearanceLarge"
-                tools:text="@string/default_text" />
+                <include layout="@layout/movie_poster_rating_releasedate" />
 
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:padding="16dp"
-                android:useDefaultMargins="true">
+           <include layout="@layout/trailers_layout" />
 
-                <TextView
-                    android:id="@+id/rating_label"
-                    style="@style/DetailTextViewStyle"
-                    android:layout_column="0"
-                    android:layout_row="0"
-                    android:text="@string/rating_text_view_label" />
-
-                <TextView
-                    android:id="@+id/rating"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:layout_row="0"
-                    android:background="@color/content_background"
-                    android:fontFamily="sans-serif"
-                    android:padding="@dimen/textview_padding"
-                    android:textAppearance="?android:textAppearanceMedium"
-                    tools:text="@string/default_text" />
-
-                <!-- TODO: To add an actual rating bar in teh future -->
-                <!-- <android.support.v7.widget.AppCompatRatingBar
-                    android:id="@+id/rating"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:layout_row="0"
-                    android:numStars="5"
-                    android:max="5"
-                    android:isIndicator="true"
-                    android:rating="2.5"
-                    />-->
-
-                <TextView
-                    android:id="@+id/release_date_label"
-                    style="@style/DetailTextViewStyle"
-                    android:layout_column="0"
-                    android:layout_row="1"
-                    android:text="@string/release_date_text_view_label" />
-
-                <TextView
-                    android:id="@+id/release_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:layout_row="1"
-                    android:background="@color/content_background"
-                    android:fontFamily="sans-serif"
-                    android:padding="@dimen/textview_padding"
-                    android:textAppearance="?android:textAppearanceMedium"
-                    tools:text="@string/default_text" />
-
-
-                <TextView
-                    android:id="@+id/overview_label"
-                    style="@style/OtherLabelsStyle"
-                    android:layout_column="0"
-                    android:layout_columnSpan="2"
-                    android:layout_row="2"
-                    android:text="@string/overview_text_view_label"
-                    android:textAlignment="center" />
-
-                <TextView
-                    android:id="@+id/overview_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_columnSpan="2"
-                    android:layout_gravity="start"
-                    android:layout_row="3"
-                    android:background="@color/content_background"
-                    android:fontFamily="sans-serif"
-                    android:padding="@dimen/textview_padding"
-                    android:textAlignment="textStart"
-                    android:textAppearance="?android:textAppearanceMedium"
-                    tools:text="@string/default_text" />
-
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/card_margin"
-                    app:cardCornerRadius="@dimen/card_radius"
-                    android:background="@color/content_background"
-                    android:layout_column="0"
-                    android:layout_columnSpan="2"
-                    android:layout_row="4">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            style="@style/OtherLabelsStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/trailers_header"
-                            tools:textColor="@android:color/black"/>
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/trailers_recycler_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            android:layout_margin="@dimen/fab_margin"
-                            />
-
-                        <TextView
-                            android:id="@+id/no_trailers_text_view"
-                            style="@style/OtherLabelsStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/no_trailers"
-                            android:visibility="gone"
-                            tools:textColor="@android:color/black"/>
-                        <Button
-                            android:id="@+id/all_trailers_button"
-                            android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:background="@drawable/background_state"
-                            android:text="@string/all_trailers"/>
-
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/card_margin"
-                    app:cardCornerRadius="@dimen/card_radius"
-                    android:layout_column="0"
-                    android:layout_columnSpan="2"
-                    android:layout_row="5">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            style="@style/OtherLabelsStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/reviews_header"
-                            tools:textColor="@android:color/black"/>
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/reviews_recycler_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="250dp"
-                            android:layout_margin="@dimen/fab_margin"
-                            />
-
-                        <TextView
-                            android:id="@+id/no_reviews_text_view"
-                            style="@style/OtherLabelsStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/no_reviews"
-                            android:visibility="gone"
-                            tools:textColor="@android:color/black"/>
-
-                        <Button
-                            android:id="@+id/all_reviews_button"
-                            android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:background="@drawable/background_state"
-                            android:text="@string/all_reviews"/>
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView
-                    >
-
-
-            </GridLayout>
-
+            <include layout="@layout/reviews_layout" />
 
         </LinearLayout>
 

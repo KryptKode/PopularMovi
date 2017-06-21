@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="content_background">#FFE0B2</color>
+    <color name="textviewColor">#BBB</color>
+    <color name="background">#EEE</color>
 </resources>

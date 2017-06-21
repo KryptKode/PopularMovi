@@ -16,6 +16,7 @@ public class Trailers implements Parcelable {
     public static final String TRAILERS = "trailers" ;
     public static final String TITLE = "title";
     private static final String DEFAULTJPG =  "/default.jpg";
+    public static final String PAGE = "page";
     private String type;
     private String name;
     private String key;
@@ -26,11 +27,11 @@ public class Trailers implements Parcelable {
         return YOUTUBE_THUMBNAIL_BASE_URL + getKey() + DEFAULTJPG;
     }
 
-    private String youtubeThumbnail;
 
-    public Trailers(String name, String key, String type) {
+    public Trailers(String name, String key, String site, String type) {
         this.name = name;
         this.key = key;
+        this.site = site;
         this.type = type;
     }
 
@@ -76,7 +77,7 @@ public class Trailers implements Parcelable {
         ArrayList<Trailers> trailersArrayList = new ArrayList<>();
         Trailers trailers;
         for (int i = 0; i < number; i++){
-            trailers = new Trailers( i%2 == 0?"WonderWoman": "Logan", "5lGoQhFb4NM", i%2 == 0?"Trailer":"Teaser" );
+            trailers = new Trailers( i%2 == 0?"WonderWoman": "Logan", "5lGoQhFb4NM",i%2 == 0?"Youtube":"TUbemate", i%2 == 0?"Trailer":"Teaser" );
             trailersArrayList.add(trailers);
         }
 

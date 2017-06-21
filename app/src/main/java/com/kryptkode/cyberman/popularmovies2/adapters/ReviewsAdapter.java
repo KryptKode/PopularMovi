@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bluejamesbond.text.DocumentView;
 import com.kryptkode.cyberman.popularmovies2.R;
 import com.kryptkode.cyberman.popularmovies2.model.Reviews;
 
@@ -39,14 +40,19 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
     @Override
     public void onBindViewHolder(ReviewsViewHolder holder, int position) {
         Reviews review = reviewsArrayList.get(position);
+        String content = review.getContent();
+        String subcontent = content.substring(0, content.length() - content.length() / 5) + "...";
         String firstLetterOfAuthorName = review.getAuthor().substring(0,1);
         holder.reviewAvatarTextView.setText(firstLetterOfAuthorName);
         holder.reviewAuthortextView.setText(review.getAuthor());
         if(showingInDetailActivity){
-            holder.reviewBodytextView.setMaxLines(5);
-            holder.reviewBodytextView.setEllipsize(TextUtils.TruncateAt.END);
+            holder.reviewBodytextView.setText(subcontent);
+
         }
-        holder.reviewBodytextView.setText(review.getContent());
+        else {
+
+            holder.reviewBodytextView.setText(content);
+        }
 
     }
 
@@ -58,12 +64,12 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
     class ReviewsViewHolder extends RecyclerView.ViewHolder{
         TextView reviewAvatarTextView;
         TextView reviewAuthortextView;
-        TextView reviewBodytextView;
+        DocumentView reviewBodytextView;
      ReviewsViewHolder(View itemView) {
         super(itemView);
         reviewAvatarTextView = (TextView) itemView.findViewById(R.id.review_logo);
         reviewAuthortextView = (TextView) itemView.findViewById(R.id.review_author);
-        reviewBodytextView = (TextView) itemView.findViewById(R.id.review_body);
+        reviewBodytextView = (DocumentView) itemView.findViewById(R.id.review_body);
     }
 }
 }

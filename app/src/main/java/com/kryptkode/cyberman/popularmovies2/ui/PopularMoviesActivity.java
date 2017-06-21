@@ -27,6 +27,7 @@ import com.kryptkode.cyberman.popularmovies2.adapters.MovieAdapter;
 import com.kryptkode.cyberman.popularmovies2.data.MovieContract;
 import com.kryptkode.cyberman.popularmovies2.model.Movie;
 import com.kryptkode.cyberman.popularmovies2.utilities.JsonGet;
+import com.kryptkode.cyberman.popularmovies2.utilities.JsonParser;
 import com.kryptkode.cyberman.popularmovies2.utilities.NetworkUtil;
 import com.kryptkode.cyberman.popularmovies2.utilities.EndlessRecyclerViewScrollListener;
 
@@ -56,13 +57,15 @@ public class PopularMoviesActivity extends AppCompatActivity implements LoaderMa
     private ArrayList<Movie> movieArrayList;
     private GridLayoutManager gridLayoutManager;
 
-    private EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener;
+    EndlessRecyclerViewScrollListener scrollListener;
+
 
     private static final int LOADER_ID = 100;
 
     private boolean dataHasLoaded = false; //used to determine if the data has loaded
     private int pageNumber = 1;
     private String moviesURL;
+    private boolean isResuming;
 
 
     @Override
@@ -81,6 +84,7 @@ public class PopularMoviesActivity extends AppCompatActivity implements LoaderMa
         //instantiate the movie url
         moviesURL = NetworkUtil.buildPopularMoviesURL(SORT_PARAM).toString();
 
+
         //initialize the loader
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
 
@@ -97,8 +101,35 @@ public class PopularMoviesActivity extends AppCompatActivity implements LoaderMa
         movieAdapter.setListener(onItemClickListener); //listener defined to handle clicks on the container and favorites icon
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(movieAdapter);
+        scrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                if (dataHasLoaded){
+                    pageNumber++;
+                    Log.e("URL", "Listener_Increment_PageNumber -->" + pageNumber);
+                    dataHasLoaded = false;
+                }
+
+                if (NetworkUtil.isOnline(getApplicationContext())){
+                    getData();
+
+
+                }
+                else{
+                    Snackbar.make(findViewById(R.id.movie_container), R.string.is_not_connected, Snackbar.LENGTH_SHORT).show();
+
+                }
+            }
+        };
+        recyclerView.addOnScrollListener(scrollListener);
 
         getData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isResuming = true;
     }
 
     @Override
@@ -138,6 +169,7 @@ public class PopularMoviesActivity extends AppCompatActivity implements LoaderMa
             else{
                 Snackbar.make(findViewById(R.id.movie_container), getString(R.string.sorting_by_rating), Snackbar.LENGTH_SHORT).show();
             }
+            resetView();
             getData();
         }
         else{
@@ -146,6 +178,13 @@ public class PopularMoviesActivity extends AppCompatActivity implements LoaderMa
         }
     }
 
+    private void resetView() {
+        pageNumber = 1;
+        dataHasLoaded = false;
+        movieArrayList.clear();
+        movieAdapter.notifyDataSetChanged();
+        scrollListener.resetState();
+    }
 
 
     public void showNoInternetError(){
@@ -180,7 +219,7 @@ public class PopularMoviesActivity extends AppCompatActivity implements LoaderMa
             bundle.putString(Movie.MOVIE_TITLE, item.getOriginalTitle());
             bundle.putString(Movie.MOVIE_OVERVIEW, item.getOverview());
             bundle.putString(Movie.POSTER_URL, item.getPoster(true));
-            bundle.putString(Movie.MOVIE_RELEASE_DATE, item.getReleaseDate());
+            bundle.putString(Movie.MOVIE_RELEASE_DATE, item.getFormattedReleaseDate());
             bundle.putDouble(Movie.MOVIE_VOTE, item.getRatings());
             bundle.putInt(Movie.MOVIE_ID, item.getId());
             bundle.putBoolean(Movie.MOVIE_FAVOURITE, item.isFavourite());
@@ -207,7 +246,7 @@ public class PopularMoviesActivity extends AppCompatActivity implements LoaderMa
                 values.put(MovieContract.FavouritesEntry.FAVOURITES_COLUMN_MOVIE_RATING, item.getRatings());
                 values.put(MovieContract.FavouritesEntry.FAVOURITES_COLUMN_MOVIE_OVERVIEW, item.getOverview());
                 values.put(MovieContract.FavouritesEntry.FAVOURITES_COLUMN_MOVIE_POSTER, item.getPoster(false));
-                values.put(MovieContract.FavouritesEntry.FAVOURITES_COLUMN_MOVIE_RELEASE_DATE, item.getReleaseDate());
+                values.put(MovieContract.FavouritesEntry.FAVOURITES_COLUMN_MOVIE_RELEASE_DATE, item.getFormattedReleaseDate());
 
                 Uri uri = getContentResolver().insert(MovieContract.FavouritesEntry.CONTENT_URI, values);
 
@@ -235,7 +274,7 @@ public class PopularMoviesActivity extends AppCompatActivity implements LoaderMa
         }
         else{
             Snackbar.make(findViewById(R.id.movie_container), getString(R.string.sorting_by_rating), Snackbar.LENGTH_SHORT).show();
-           //if the datahas not loaded or the movies array list is null, it implies that the data has not loaded once
+           //if the data has not loaded or the movies array list is null, it implies that the data has not loaded once
             if (!dataHasLoaded || null == movieArrayList){
                 showNoInternetError();
             }
@@ -244,32 +283,9 @@ public class PopularMoviesActivity extends AppCompatActivity implements LoaderMa
     }
 
     private void loadMovieData(String jsonData) {
-        String poster;
-        String title;
-        String releaseDate;
-        String overview;
-        double popularity;
-        double vote_average;
-        int id;
-        if (jsonData != null) {
-            try {
-                JSONObject movie = new JSONObject(jsonData);
-                JSONArray results = movie.getJSONArray("results");
-                for (int i = 0; i < results.length(); i++) {
-                    JSONObject currentJson = results.getJSONObject(i);
-                    poster = currentJson.getString("poster_path");
-                    title = currentJson.getString("original_title");
-                    overview = currentJson.getString("overview");
-                    releaseDate = currentJson.getString("release_date");
-                    popularity = currentJson.getDouble("popularity");
-                    vote_average = currentJson.getDouble("vote_average");
-                    id = currentJson.getInt("id");
-                    Movie movieObject = new Movie(title, poster, overview, releaseDate, vote_average, id);
-                    movieArrayList.add(movieObject);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        ArrayList<Movie> tempArray = JsonParser.parseMoviesJSON(jsonData);
+        for (int i = 0; i< tempArray.size(); i++){
+            movieArrayList.add(tempArray.get(i));
         }
     }
 
@@ -278,6 +294,7 @@ public class PopularMoviesActivity extends AppCompatActivity implements LoaderMa
         return new AsyncTaskLoader<String>(this) {
 
             String JSONData;
+            String moviesLink;
             @Override
             protected void onStartLoading() {
 
@@ -285,12 +302,16 @@ public class PopularMoviesActivity extends AppCompatActivity implements LoaderMa
                 if (args == null) {
                     return;
                 }
-
+                moviesLink = args.getString(MOVIE_URL);
                 /*
                  * When we initially begin loading in the background, we want to display the
                  * loading indicator to the user
                  */
-                showLoadingIndicators();
+
+                if (!isResuming ||( !dataHasLoaded)){
+                    showLoadingIndicators();
+                }
+
 
                 //  If JSONData is not null, deliver that result. Otherwise, force a load
                 /*
@@ -307,7 +328,7 @@ public class PopularMoviesActivity extends AppCompatActivity implements LoaderMa
             @Override
             public String loadInBackground() {
                 String str = null;
-                JSONObject jsonObject = JsonGet.getDataFromWeb(moviesURL, pageNumber);
+                JSONObject jsonObject = JsonGet.getDataFromWeb(moviesLink, pageNumber);
                 if(jsonObject != null)
                    str = jsonObject.toString();
                 Log.e("URL", String.valueOf(pageNumber));

@@ -6,9 +6,13 @@ package com.kryptkode.cyberman.popularmovies2.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class Movie implements Parcelable {
 
@@ -22,6 +26,8 @@ public class Movie implements Parcelable {
     public static final String BUNDLE = "movie";
     public static final String MOVIE_ID = "id";
 
+
+
     //declare the fields
     private String originalTitle;
     private String posterUrl;
@@ -31,6 +37,9 @@ public class Movie implements Parcelable {
     private int id;
     private int check;
     private boolean favourite;
+
+    private String videosUrl;
+    private String reviewsUrl;
 
     public boolean isFavourite() {
         return favourite;
@@ -115,6 +124,16 @@ public class Movie implements Parcelable {
 
     public String getReleaseDate() {
         return releaseDate;
+    }
+
+    public String getFormattedReleaseDate() {
+        if (TextUtils.isEmpty(getReleaseDate())) return "N/A";
+        String[] date = getReleaseDate().split("-");
+        int year = Integer.parseInt(date[0]),
+                month = Integer.parseInt(date[1]),
+                day = Integer.parseInt(date[2]);
+        Calendar calendar = new GregorianCalendar(year, month - 1, day);
+        return String.format(Locale.US, "%1$tB %1$te, %1$tY", calendar);
     }
 
     //setter methods

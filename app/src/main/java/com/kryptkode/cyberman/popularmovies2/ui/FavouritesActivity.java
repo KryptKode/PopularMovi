@@ -57,7 +57,6 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                favouriteMoviesAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
                 // Build appropriate uri with String row id appended
                 String stringId = Integer.toString((int) viewHolder.itemView.getTag());
                 Uri uri = MovieContract.FavouritesEntry.CONTENT_URI;
@@ -67,8 +66,8 @@ public class FavouritesActivity extends AppCompatActivity implements LoaderManag
                 getContentResolver().delete(uri, null, null);
 
                 // COMPLETED (3) Restart the loader to re-query for all tasks after a deletion
-                getSupportLoaderManager().restartLoader(LOADER_ID, null, FavouritesActivity.this);
-
+               getSupportLoaderManager().restartLoader(LOADER_ID, null, FavouritesActivity.this);
+                favouriteMoviesAdapter.notifyDataSetChanged();
                Log.e("DEL", "--> " + viewHolder.getAdapterPosition());
 
             }
