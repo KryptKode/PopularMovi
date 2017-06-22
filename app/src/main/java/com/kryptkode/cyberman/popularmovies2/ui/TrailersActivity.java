@@ -47,10 +47,12 @@ public class TrailersActivity extends AppCompatActivity implements TrailersAdapt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reviews);
+        setContentView(R.layout.activity_trailers);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        noTrailersTextView = (TextView)findViewById(R.id.trailers_no_trailers_text_view);
 
         Bundle bundle = getIntent().getBundleExtra(Trailers.TRAILERS);
         trailersArrayList = bundle.getParcelableArrayList(Trailers.TRAILERS);
@@ -58,7 +60,6 @@ public class TrailersActivity extends AppCompatActivity implements TrailersAdapt
         if (trailersArrayList.isEmpty()){
             pageNumber = 1;
             if(isEmpty){
-                noTrailersTextView = (TextView) findViewById(R.id.trailers_no_trailers_text_view);
                 noTrailersTextView.setVisibility(View.VISIBLE);
             }
         }
@@ -67,7 +68,7 @@ public class TrailersActivity extends AppCompatActivity implements TrailersAdapt
         }
         movieId = bundle.getInt(Trailers.MOVIE_ID);
         getSupportActionBar().setTitle(getString(R.string.reviews_title, bundle.getString(Trailers.TITLE)));
-        trailersRecyclerView = (RecyclerView) findViewById(R.id.reviews_activity_rv);
+        trailersRecyclerView = (RecyclerView) findViewById(R.id.trailers_activity_rv);
 
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){

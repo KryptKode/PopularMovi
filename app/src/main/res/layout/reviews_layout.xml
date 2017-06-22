@@ -60,7 +60,16 @@
                         android:visibility="invisible"
                         />
 
-
+                    <TextView
+                        android:id="@+id/no_reviews_text_view"
+                        style="@style/OtherLabelsStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/no_reviews"
+                        android:gravity="center_vertical"
+                        android:layout_centerInParent="true"
+                        android:visibility="invisible"
+                        tools:textColor="@android:color/black"/>
 
                     <ProgressBar
                         android:id="@+id/reviews_loading_progress_bar"

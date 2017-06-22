@@ -49,13 +49,14 @@ public class ReviewsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        noReviewsTextView = (TextView) findViewById(R.id.reviews_no_reviews_text_view);
+
         Bundle bundle = getIntent().getBundleExtra(Reviews.REVIEWS);
         reviewsArrayList = bundle.getParcelableArrayList(Reviews.REVIEWS);
         Boolean isEmpty = bundle.getBoolean(Reviews.IS_EMPTY);
         if (reviewsArrayList.isEmpty()){
             pageNumber = 1;
             if(isEmpty){
-                noReviewsTextView = (TextView) findViewById(R.id.reviews_no_reviews_text_view);
                 noReviewsTextView.setVisibility(View.VISIBLE);
             }
         }

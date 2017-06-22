@@ -49,6 +49,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     private static final String MOVIE_REVIEWS = "reviews";
     private static final String MOVIE_TRAILERS = "trailers";
 
+
     private FloatingActionButton fab;
     private TextView ratingsTextView;
     private TextView releaseDateTextView;
@@ -106,6 +107,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         durationTextView = (TextView) findViewById(R.id.detail_duration_text_view);
         moviePoster = (ImageView) findViewById(R.id.detail_image_view);
 
+        noreviewsTextView = (TextView)findViewById(R.id.no_reviews_text_view);
+        noTrailersTextView = (TextView) findViewById(R.id.no_trailers_text_view);
         allReviewsButton = (Button) findViewById(R.id.all_reviews_button);
         allTrailersButton = (Button) findViewById(R.id.all_trailers_button);
         allReviewsButton.setOnClickListener(this);
@@ -340,7 +343,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         ArrayList<Trailers> tempArray = JsonParser.parseMovieTrailersJSON(data);
 
         if (tempArray.isEmpty()){
-            noTrailersTextView = (TextView) findViewById(R.id.no_trailers_text_view);
             noTrailersTextView.setVisibility(View.VISIBLE);
             trailersAreEmpty = true;
         }
@@ -390,12 +392,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
         ArrayList<Reviews> tempArray = JsonParser.parseMovieReviewsJSON(data);
         if (tempArray.isEmpty()){
-            noreviewsTextView = (TextView) findViewById(R.id.reviews_no_reviews_text_view);
-
-            if (noreviewsTextView != null) {
-
-                noreviewsTextView.setVisibility(View.VISIBLE);
-            }
+            noreviewsTextView.setVisibility(View.VISIBLE);
             reviewsAreEmpty = true;
         }
         else{

@@ -237,6 +237,7 @@ public class PopularMoviesActivity extends AppCompatActivity implements LoaderMa
             if (item.isFavourite()) {
                 item.setFavourite(false);
                 Snackbar.make(findViewById(R.id.movie_container), getString(R.string.removed_from_favorites), Snackbar.LENGTH_SHORT).show();
+                //TODO: Remove from Favortites
             } else {
                 item.setFavourite(true);
 
@@ -250,7 +251,7 @@ public class PopularMoviesActivity extends AppCompatActivity implements LoaderMa
 
                 Uri uri = getContentResolver().insert(MovieContract.FavouritesEntry.CONTENT_URI, values);
 
-                Snackbar.make(findViewById(R.id.movie_container), getString(R.string.added_to_favorites) + " -->" +uri, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.movie_container), getString(R.string.added_to_favorites), Snackbar.LENGTH_SHORT).show();
             }
 
             movieAdapter.notifyDataSetChanged();
